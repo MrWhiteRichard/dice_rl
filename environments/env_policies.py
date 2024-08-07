@@ -36,7 +36,7 @@ import tensorflow_probability as tfp
 from dice_rl.environments import suites
 from dice_rl.environments.infinite_cartpole import InfiniteCartPole
 from dice_rl.environments.infinite_frozenlake import InfiniteFrozenLake
-from dice_rl.environments.infinite_reacher import InfiniteReacher
+# from dice_rl.environments.infinite_reacher import InfiniteReacher
 from dice_rl.environments.gridworld import navigation
 from dice_rl.environments.gridworld import maze
 from dice_rl.environments.gridworld import point_maze

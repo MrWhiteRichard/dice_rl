@@ -269,7 +269,8 @@ class TFOffpolicyDataset(tf.Module, OffpolicyDataset):
 
   @tf.Module.with_name_scope
   def get_all_steps(self, num_steps: Optional[int] = None,
-                    limit: Optional[int] = None) -> EnvStep:
+                    limit: Optional[int] = None,
+                    include_terminal_steps: bool = False) -> EnvStep:
     if self.num_steps <= 0:
       raise ValueError('No steps in the dataset.')
 
@@ -280,7 +281,10 @@ class TFOffpolicyDataset(tf.Module, OffpolicyDataset):
     max_range = self._last_valid_steps_id + 1
     if limit is not None:
       max_range = tf.minimum(max_range, tf.cast(limit, tf.int64))
-    all_valid_steps = self._valid_steps_table.read(tf.range(max_range))
+    x = self._valid_steps_table.read(tf.range(max_range))
+    A = not include_terminal_steps
+    y = tf.range(self.capacity)
+    all_valid_steps = x if A else y
 
     # Can't collect trajectories that trail off end of dataset.
     if tf.reduce_min(all_valid_steps) + num_steps_ > self._last_step_id + 1:
